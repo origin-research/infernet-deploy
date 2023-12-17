@@ -1,2 +1,8 @@
-# Secret config
-config.json
+# Secret configs
+configs/
+
+# Terraform
+.terraform/
+.terraform*
+terraform.tfvars
+terraform.tfstate*
