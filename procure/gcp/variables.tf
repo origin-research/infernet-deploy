@@ -52,11 +52,6 @@ variable "ip_allow_ssh" {
   type        = list(string)
 }
 
-variable "service_account_email" {
-  description = "Email address of the service account to use for the GCE instance. Needs access to secrets."
-  type        = string
-}
-
 variable "is_production" {
   description = "Whether or not this is a production deployment"
   type        = bool

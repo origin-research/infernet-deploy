@@ -56,11 +56,6 @@ resource "google_compute_instance" "nodes" {
     }
   }
 
-  service_account {
-    email  = "${var.service_account_email}"
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
-
   # Disabled in production
   allow_stopping_for_update = var.is_production ? false : true
 }
