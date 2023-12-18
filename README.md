@@ -1,6 +1,6 @@
 # Infernet Node Deployment
 
-Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/jazz) nodes on Amazon Web Services (AWS) and / or Google Cloud Platform (GCP), using [Terraform](https://www.terraform.io/) for infrastructure procurement and [Docker compose](https://docs.docker.com/compose/) for deployment.
+Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/jazz) **[TODO final url]** nodes on Amazon Web Services (AWS) and / or Google Cloud Platform (GCP), using [Terraform](https://www.terraform.io/) for infrastructure procurement and [Docker compose](https://docs.docker.com/compose/) for deployment.
 
 
 ### Setup
@@ -13,7 +13,7 @@ Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/j
     - Each node *strictly* requires its own configuration `.json` file, even if those are identical.
     - Number of `.json` files must match the `node_count` variable in `terraform.tfvars`.
         - Extra files are ignored.
-    - For instructions on configuring nodes, refer to the [Infernet repo](https://github.com/origin-research/jazz).
+    - For instructions on configuring nodes, refer to the [Infernet repo](https://github.com/origin-research/jazz) **[TODO final url]**.
 
 
 ### Deploy on AWS
