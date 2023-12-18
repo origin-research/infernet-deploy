@@ -12,7 +12,7 @@ sudo apt install -y docker-ce
 # Clone deploy repo on the first run
 export REPO_PATH=~/repo
 if [ ! -d "$REPO_PATH" ]; then
-    git clone -b "${repo_branch}" "${repo_url}" "$REPO_PATH"
+    git clone "${repo_url}" --branch "${repo_branch}" --single-branch "$REPO_PATH"
 else
     echo "Repository already exists at $REPO_PATH"
 fi
@@ -23,8 +23,8 @@ curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secr
 chmod 600 config.json
 
 # Get docker credentials
-export DOCKER_USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker_username" -H "Metadata-Flavor: Google")
-export DOCKER_PASSWORD=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker_password" -H "Metadata-Flavor: Google")
+DOCKER_USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker_username" -H "Metadata-Flavor: Google")
+DOCKER_PASSWORD=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker_password" -H "Metadata-Flavor: Google")
 
 # Run docker compose
 echo $DOCKER_PASSWORD | sudo docker login --username $DOCKER_USERNAME --password-stdin

@@ -8,8 +8,11 @@ Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/j
 2. **Configure nodes**: A node configuration file **for each** node being deployed.
     - See [example configuration](configs/0.json.example).
     - They must be named `0.json`, `1.json`, etc...
+        - Misnamed files are ignored.
     - They must be placed under the top-level `configs/` directory.
     - Each node *strictly* requires its own configuration `.json` file, even if those are identical.
+    - Number of `.json` files must match the `node_count` variable in `terraform.tfvars`.
+        - Extra files are ignored.
     - For instructions on configuring nodes, refer to the [Infernet repo](https://github.com/origin-research/jazz).
 
 

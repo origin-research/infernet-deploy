@@ -13,7 +13,7 @@ sudo apt install -y awscli
 # Clone deploy repo on the first run
 export REPO_PATH=~/repo
 if [ ! -d "$REPO_PATH" ]; then
-    git clone -b "${repo_branch}" "${repo_url}" "$REPO_PATH"
+    git clone "${repo_url}" --branch "${repo_branch}" --single-branch "$REPO_PATH"
 else
     echo "Repository already exists at $REPO_PATH"
 fi
