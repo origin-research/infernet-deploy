@@ -61,22 +61,22 @@ variable "is_production" {
 # Startup
 
 variable "repo_url" {
-  description = "The github url of the node repo to clone"
+  description = "The github url of this repo"
   type	      = string
 }
 
 variable "repo_branch" {
-  description = "The branch of the repo to checkout"
+  description = "The branch of this repo to use for deployment"
   type 	      = string
 }
 
 variable "docker_username" {
-  description = "The username for the docker registry"
+  description = "Dockerhub username, required for pulling private docker images (including the Infernet node)"
   type        = string
 }
 
 variable "docker_password" {
-  description = "The password for the docker registry"
+  description = "Dockerhub PAT, required for pulling private docker images (including the Infernet node)"
   type        = string
   sensitive   = true
 }
