@@ -80,3 +80,8 @@ variable "docker_password" {
   type        = string
   sensitive   = true
 }
+
+variable "is_confidential_compute" {
+  description = "whether or not confidential computing is enabled"
+  type        = bool
+}
