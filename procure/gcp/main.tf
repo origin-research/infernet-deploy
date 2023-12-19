@@ -58,8 +58,21 @@ resource "google_compute_instance" "nodes" {
 
   # Disabled in production
   allow_stopping_for_update = var.is_production ? false : true
-}
 
+#------------------------------------------------------------------------------
+  # confidential computing
+  # NOTE: needs to be N2D or C2D instance if using confidential computing
+  # https://cloud.google.com/confidential-computing/confidential-vm/docs/os-and-machine-type#machine-type
+
+  confidential_instance_config {
+    enable_confidential_compute = var.is_confidential_compute ? true : false
+  }
+
+  # required confidential compute
+  scheduling {
+    on_host_maintenance = var.is_confidential_compute ? "TERMINATE" : "MIGRATE"
+  }
+}
 #------------------------------------------------------------------------------
 
 # Network
