@@ -43,7 +43,7 @@ resource "aws_instance" "nodes" {
   subnet_id = aws_subnet.node_subnet.id
   vpc_security_group_ids = [aws_security_group.firewall.id]
 
-  user_data = templatefile("${path.module}/startup_script.tpl", {
+  user_data = templatefile("${path.module}/node.sh", {
       region       = var.region
       repo_url 	   = var.repo_url
       repo_branch  = var.repo_branch

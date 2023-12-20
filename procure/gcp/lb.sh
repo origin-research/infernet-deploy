@@ -9,18 +9,14 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt install -y docker-ce
 
-# Clone deploy repo on the first run
-export REPO_PATH=~/repo
-if [ ! -d "$REPO_PATH" ]; then
-    git clone "${repo_url}" --branch "${repo_branch}" --single-branch "$REPO_PATH"
-else
-    echo "Repository already exists at $REPO_PATH"
-fi
+# Home directory
+HOME=~/
+cd "$HOME"
 
-# Config file
-cd "$REPO_PATH"
-curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-config -H "Metadata-Flavor: Google" | base64 --decode > config.json
-chmod 600 config.json
+# Fetch node IPs from metadata and save to file
+curl -H "Metadata-Flavor: Google" \
+     "http://metadata.google.internal/computeMetadata/v1/instance/attributes/node_ips" \
+     > $HOME/ips.txt
 
 # Get docker credentials
 DOCKER_USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker_username" -H "Metadata-Flavor: Google")
@@ -28,5 +24,5 @@ DOCKER_PASSWORD=$(curl "http://metadata.google.internal/computeMetadata/v1/insta
 
 # Run docker compose
 echo $DOCKER_PASSWORD | sudo docker login --username $DOCKER_USERNAME --password-stdin
-sudo docker compose up -d
+sudo docker run -d -p 5000:5000 --name load-balancer -v ./ips.txt:/app/ips.txt --restart on-failure originresearch/infernet-lb:0.0.1
 sudo docker logout
