@@ -1,4 +1,3 @@
-
 # Load balancer
 resource "aws_instance" "load_balancer" {
   ami             = "ami-07b36ea9852e986ad"
