@@ -8,7 +8,6 @@ sudo apt install -y apt-transport-https ca-certificates curl software-properties
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt install -y docker-ce
-sudo apt install -y awscli
 
 # Clone deploy repo on the first run
 export REPO_PATH=~/repo
@@ -20,12 +19,17 @@ fi
 
 # Config file
 cd "$REPO_PATH"
-aws ssm get-parameter --name "config_${node_id}" --with-decryption --query "Parameter.Value" --output text --region "${region}" | base64 --decode > config.json
+curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-config -H "Metadata-Flavor: Google" | base64 --decode > config.json
 chmod 600 config.json
 
-# Fetch secrets from SSM Parameter Store
-DOCKER_USERNAME=$(aws ssm get-parameter --name "docker_username" --with-decryption --query "Parameter.Value" --output text --region "${region}")
-DOCKER_PASSWORD=$(aws ssm get-parameter --name "docker_password" --with-decryption --query "Parameter.Value" --output text --region "${region}")
+# Update config file with redis address
+REDIS_ADDRESS=$(curl -H "Metadata-Flavor: Google" \
+  http://metadata.google.internal/computeMetadata/v1/instance/attributes/redis-address)
+jq --arg redis_host "$REDIS_ADDRESS" '.redis.host = $redis_host' config.json > /tmp/config.json && mv /tmp/config.json config.json
+
+# Get docker credentials
+DOCKER_USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker-username" -H "Metadata-Flavor: Google")
+DOCKER_PASSWORD=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker-password" -H "Metadata-Flavor: Google")
 
 # Run docker compose
 echo $DOCKER_PASSWORD | sudo docker login --username $DOCKER_USERNAME --password-stdin
