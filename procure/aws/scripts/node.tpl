@@ -4,11 +4,10 @@
 cd ~/
 sudo apt update
 sudo apt-get update
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common jq
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-sudo apt install -y docker-ce
-sudo apt install -y awscli
+sudo apt install -y docker-ce awscli
 
 # Create a shell script for subsequent boots
 cat << 'EOF' > $HOME/run_on_reboot.sh
@@ -26,10 +25,6 @@ fi
 cd "$REPO_PATH"
 aws ssm get-parameter --name "config_${node_id}" --with-decryption --query "Parameter.Value" --output text --region "${region}" | base64 --decode > config.json
 chmod 600 config.json
-
-# Update config file with redis address
-REDIS_ADDRESS=$(aws ssm get-parameter --name "redis_address" --with-decryption --query "Parameter.Value" --output text --region "${region}")
-jq --arg redis_host "$REDIS_ADDRESS" '.redis.host = $redis_host' config.json > /tmp/config.json && mv /tmp/config.json config.json
 
 # Get docker credentials
 DOCKER_USERNAME=$(aws ssm get-parameter --name "docker_username" --with-decryption --query "Parameter.Value" --output text --region "${region}")

@@ -32,7 +32,6 @@ resource "google_compute_instance" "nodes" {
     secret-config = file("${path.module}/../../configs/encoded/${count.index}")
     docker-username = var.docker_username
     docker-password = var.docker_password
-    redis-address = google_redis_instance.redis_instance.host
   }
 
   boot_disk {

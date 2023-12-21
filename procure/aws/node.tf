@@ -7,9 +7,6 @@ resource "aws_instance" "nodes" {
   subnet_id = aws_subnet.node_subnet.id
   vpc_security_group_ids = [aws_security_group.security_group.id]
 
-  # Dependency is hidden in the startup script, so we need to specify it
-  depends_on = [aws_elasticache_cluster.redis_cluster]
-
   user_data = templatefile("${path.module}/scripts/node.tpl", {
       region       = var.region
       repo_url 	   = var.repo_url

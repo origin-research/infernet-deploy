@@ -20,13 +20,6 @@ resource "aws_ssm_parameter" "config_file" {
   value = file("${path.module}/../../configs/encoded/${count.index}")
 }
 
-# Redis hostname
-resource "aws_ssm_parameter" "redis_address" {
-  name  = "redis_address"
-  type  = "String"
-  value = "${aws_elasticache_cluster.redis_cluster.cache_nodes[0].address}"
-}
-
 # Node IPs
 resource "aws_ssm_parameter" "node_ips" {
   name  = "node_ips"

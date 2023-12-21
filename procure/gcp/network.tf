@@ -47,19 +47,6 @@ resource "google_compute_firewall" "allow-web" {
   }
 }
 
-# Redis firewall
-resource "google_compute_firewall" "allow_redis" {
-  name    = "allow-redis-${var.instance_name}"
-  network = google_compute_network.node_net.name
-
-  allow {
-    protocol = "tcp"
-    ports    = ["6379"]
-  }
-
-  source_ranges = [google_compute_subnetwork.node_subnet.ip_cidr_range]
-}
-
 #------------------------------------------------------------------------------
 
 # Node external IPs

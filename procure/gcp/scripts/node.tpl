@@ -4,7 +4,7 @@
 cd ~/
 sudo apt update
 sudo apt-get update
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common jq
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt install -y docker-ce
@@ -21,11 +21,6 @@ fi
 cd "$REPO_PATH"
 curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-config -H "Metadata-Flavor: Google" | base64 --decode > config.json
 chmod 600 config.json
-
-# Update config file with redis address
-REDIS_ADDRESS=$(curl -H "Metadata-Flavor: Google" \
-  http://metadata.google.internal/computeMetadata/v1/instance/attributes/redis-address)
-jq --arg redis_host "$REDIS_ADDRESS" '.redis.host = $redis_host' config.json > /tmp/config.json && mv /tmp/config.json config.json
 
 # Get docker credentials
 DOCKER_USERNAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/docker-username" -H "Metadata-Flavor: Google")
