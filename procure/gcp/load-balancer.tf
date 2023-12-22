@@ -19,6 +19,17 @@ resource "google_compute_instance" "load_balancer" {
     }
   }
 
+  service_account {
+    email = var.service_account_email
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append",
+    ]
+  }
+
   metadata = {
     # Startup script
     startup-script = file("${path.module}/scripts/lb.sh", )
@@ -50,7 +61,11 @@ resource "null_resource" "lb_restarter" {
 
   provisioner "local-exec" {
     # Force reset load balancer, since updating its metadata does not
-    command = "gcloud compute instances reset ${google_compute_instance.load_balancer.name} --zone=${google_compute_instance.load_balancer.zone}"
+    command = <<EOT
+      gcloud auth activate-service-account --key-file=${var.gcp_credentials_file_path}
+      gcloud compute instances reset ${google_compute_instance.load_balancer.name} --zone=${google_compute_instance.load_balancer.zone}
+      gcloud auth revoke ${var.service_account_email}
+    EOT
   }
 
   depends_on = [google_compute_instance.load_balancer]

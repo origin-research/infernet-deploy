@@ -9,7 +9,8 @@ terraform {
 
 # GCP Configuration
 provider "google" {
-  project     = "${var.project}"
-  region      = "${var.region}"
-  zone        = "${var.zone}"
+  credentials = file(var.gcp_credentials_file_path)
+  project     = var.project
+  region      = var.region
+  zone        = var.zone
 }

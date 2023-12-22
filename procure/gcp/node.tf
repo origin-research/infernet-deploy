@@ -21,6 +21,17 @@ resource "google_compute_instance" "nodes" {
     }
   }
 
+  service_account {
+    email = var.service_account_email
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append",
+    ]
+  }
+
   metadata = {
     # Startup script
     startup-script = templatefile("${path.module}/scripts/node.tpl", {

@@ -1,5 +1,16 @@
 # Project
 
+variable "gcp_credentials_file_path" {
+  description = "Path to the GCP credentials file"
+  type        = string
+  default     = "terraform-deployer-key.json"
+}
+
+variable "service_account_email" {
+  description = "Email address of the service account in the GCP credentials file."
+  type        = string
+}
+
 variable "project" {
   description = "The GCP project ID"
   type        = string

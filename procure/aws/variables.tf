@@ -1,5 +1,16 @@
 # Project
 
+variable "access_key_id" {
+  description = "AWS_ACCESS_KEY_ID for the AWS account"
+  type        = string
+}
+
+variable "secret_access_key" {
+  description = "AWS_SECRET_ACCESS_KEY for the AWS account"
+  type        = string
+  sensitive   = true
+}
+
 variable "region" {
   description = "The region where AWS resources will be created"
   type        = string
