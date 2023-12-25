@@ -19,9 +19,9 @@ Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/j
 The load balancing REST server is configured automatically by Terraform. However, if you plan to use it, you need to understand its implications:
 > **IMPORTANT:** When configuring a heterogeneous node cluster (i.e. `0.json`, `1.json`, etc. are not identical), container names should be reserved for a **unique container setup at the cluster level, i.e. across nodes (and thus `.json` files)**. 
 >
-> _Example:_ Consider nodes A and B, each running a single LLM inference container; node A runs `image1`, and node B runs `image2`. If we name both containers `"llm-inference"` (`containers[0].name` attribute in `0.json`, `1.json`), the load balancer will be **unable to disambiguate** between the two services, and will consider them fungible, _which they are not._
+> _Example:_ Consider nodes A and B, each running a single LLM inference container; node A runs `image1`, and node B runs `image2`. If we name both containers `"llm-inference"` (`containers[0].name` attribute in `0.json`, `1.json`), the load balancer will be **unable to disambiguate** between the two services, and will consider them interchangeable, _which they are not._
 >
-> Therefore, **re-using a name across configuration files must imply an identical container configuration**, including image, environment variables, command, etc. This will explicitly tell the load balancer which containers are fungible, and allow it to distribute requests for those containers across _all nodes running that container._
+> Therefore, **re-using a name across configuration files must imply an identical container configuration**, including image, environment variables, command, etc. This will explicitly tell the load balancer which containers are interchangeable, and allow it to distribute requests for those containers across _all nodes running that container._
 
 
 ### Deploy on AWS
