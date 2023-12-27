@@ -71,16 +71,6 @@ variable "is_production" {
 
 # Startup
 
-variable "repo_url" {
-  description = "The github url of this repo"
-  type	      = string
-}
-
-variable "repo_branch" {
-  description = "The branch of this repo to use for deployment"
-  type 	      = string
-}
-
 variable "docker_username" {
   description = "Dockerhub username, required for pulling private docker images (including the Infernet node)"
   type        = string

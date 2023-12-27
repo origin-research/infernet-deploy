@@ -34,15 +34,15 @@ resource "google_compute_instance" "nodes" {
 
   metadata = {
     # Startup script
-    startup-script = templatefile("${path.module}/scripts/node.tpl", {
-      repo_url 	   = var.repo_url
-      repo_branch  = var.repo_branch
-    })
+    startup-script = file("${path.module}/scripts/node.sh")
+
+    # Deployment files
+    deploy-tar = filebase64("${path.module}/../deploy.tar.gz")
 
     # Secrets
-    secret-config = file("${path.module}/../../configs/encoded/${count.index}")
     docker-username = var.docker_username
     docker-password = var.docker_password
+    secret-config = filebase64("${path.module}/../../configs/${count.index}.json")
   }
 
   boot_disk {
