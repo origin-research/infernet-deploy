@@ -1,7 +1,7 @@
 # GCE instances
 resource "google_compute_instance" "nodes" {
   provider = google
-  machine_type = "${var.machine_type}"
+  machine_type = var.machine_type
 
   count = var.node_count
   name = "${var.instance_name}-${count.index}"
@@ -47,7 +47,7 @@ resource "google_compute_instance" "nodes" {
 
   boot_disk {
     initialize_params {
-      image = "${var.image}"
+      image = var.image
       size = 200
     }
   }

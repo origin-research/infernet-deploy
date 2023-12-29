@@ -1,0 +1,21 @@
+repos:
+  # Terraform linter
+  - repo: local
+    hooks:
+      - id: tflint
+        name: tflint
+        entry: tflint --recursive
+        language: system
+        types: [terraform]
+
+  # Default pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      # Ensure EOF exists
+      - id: end-of-file-fixer
+      # Prevent adding large files
+      - id: check-added-large-files
+        args: ["--maxkb=5000"]
+      # Newline at end of file
+      - id: trailing-whitespace

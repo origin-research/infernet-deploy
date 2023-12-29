@@ -31,5 +31,5 @@ resource "aws_ssm_parameter" "deploy_tar" {
 resource "aws_ssm_parameter" "node_ips" {
   name  = "node_ips"
   type  = "String"
-  value = join("\n", aws_eip.static_ip.*.public_ip)
+  value = join("\n", aws_eip.static_ip[*].public_ip)
 }

@@ -26,7 +26,7 @@ resource "aws_instance" "load_balancer" {
 # Reboot load balancer when node IPs change, so it can pick up new nodes and remove old ones
 resource "null_resource" "update_lb" {
   triggers = {
-    node_ips = join("\n", aws_eip.static_ip.*.public_ip)
+    node_ips = join("\n", aws_eip.static_ip[*].public_ip)
   }
 
   provisioner "local-exec" {

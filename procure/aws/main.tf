@@ -4,7 +4,12 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.12"
     }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
   }
+  required_version = ">= 1.6.0"
 }
 
 # AWS Configuration

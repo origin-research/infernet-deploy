@@ -44,7 +44,7 @@ resource "google_compute_instance" "load_balancer" {
 
   boot_disk {
     initialize_params {
-      image = "${var.image}"
+      image = var.image
       size = 100
     }
   }

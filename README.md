@@ -80,3 +80,16 @@ The load balancing REST server is configured automatically by Terraform. However
     # Destroy deployment 
     make destroy provider=gcp
     ```
+
+### Using TfLint
+
+```bash
+# Install tflint
+brew install tflint
+
+# Install plugins
+tflint --init
+
+# Run on all directories
+tflint --recursive
+```
