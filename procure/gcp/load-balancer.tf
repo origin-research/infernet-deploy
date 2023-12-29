@@ -36,7 +36,7 @@ resource "google_compute_instance" "load_balancer" {
 
     # Node IPs
     node_ips = join("\n", [for ip in google_compute_address.static-ip : ip.address])
-  
+
     # Docker credentials
     docker_username = var.docker_username
     docker_password = var.docker_password

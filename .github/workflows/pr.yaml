@@ -4,10 +4,10 @@
 
 name: pre-commit
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
-  python_ci:
+  pre-commit:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +17,17 @@ jobs:
       uses: pre-commit/action@v3.0.0
       with:
         extra_args: --all-files --show-diff-on-failure
+
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v3
+      with:
+        tflint_version: v0.44.1
+
+    - name: Show version
+      run: tflint --version
+
+    - name: Init TFLint
+      run: tflint --init
+
+    - name: Run TFLint
+      run: tflint -f compact
