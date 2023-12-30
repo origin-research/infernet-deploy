@@ -17,12 +17,19 @@ resource "aws_ssm_parameter" "config_file" {
 
   name  = "config_${count.index}"
   type  = "SecureString"
-  value = file("${path.module}/../../configs/encoded/${count.index}")
+  value = filebase64("${path.module}/../../configs/${count.index}.json")
+}
+
+# Deployment files
+resource "aws_ssm_parameter" "deploy_tar" {
+  name  = "deploy_tar"
+  type  = "SecureString"
+  value = filebase64("${path.module}/../deploy.tar.gz")
 }
 
 # Node IPs
 resource "aws_ssm_parameter" "node_ips" {
   name  = "node_ips"
   type  = "String"
-  value = join("\n", aws_eip.static_ip.*.public_ip)
+  value = join("\n", aws_eip.static_ip[*].public_ip)
 }

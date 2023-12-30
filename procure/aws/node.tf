@@ -9,9 +9,7 @@ resource "aws_instance" "nodes" {
 
   user_data = templatefile("${path.module}/scripts/node.tpl", {
       region       = var.region
-      repo_url 	   = var.repo_url
-      repo_branch  = var.repo_branch
-      node_id      = "${count.index}"
+      node_id      = count.index
   })
 
   root_block_device {

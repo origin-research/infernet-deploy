@@ -14,10 +14,10 @@ resource "aws_vpc" "node_vpc" {
 # Subnet (with IPv6 capabilities)
 resource "aws_subnet" "node_subnet" {
   vpc_id = aws_vpc.node_vpc.id
-  cidr_block = "${cidrsubnet(aws_vpc.node_vpc.cidr_block, 4, 1)}"
+  cidr_block = cidrsubnet(aws_vpc.node_vpc.cidr_block, 4, 1)
   map_public_ip_on_launch = true
 
-  ipv6_cidr_block = "${cidrsubnet(aws_vpc.node_vpc.ipv6_cidr_block, 8, 1)}"
+  ipv6_cidr_block = cidrsubnet(aws_vpc.node_vpc.ipv6_cidr_block, 8, 1)
   assign_ipv6_address_on_creation = true
 
   tags = {
@@ -49,12 +49,12 @@ resource "aws_route_table" "route_table" {
 
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.gateway.id}"
+        gateway_id = aws_internet_gateway.gateway.id
     }
 
     route {
         ipv6_cidr_block = "::/0"
-        gateway_id = "${aws_internet_gateway.gateway.id}"
+        gateway_id = aws_internet_gateway.gateway.id
     }
 
     tags = {
@@ -64,8 +64,8 @@ resource "aws_route_table" "route_table" {
 
 # Associate the route table with the subnet
 resource "aws_route_table_association" "rta" {
-    subnet_id      = "${aws_subnet.node_subnet.id}"
-    route_table_id = "${aws_route_table.route_table.id}"
+    subnet_id      = aws_subnet.node_subnet.id
+    route_table_id = aws_route_table.route_table.id
 }
 
 # Security group
@@ -76,7 +76,7 @@ resource "aws_security_group" "security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.ip_allow_ssh
   }
 
   ingress {
@@ -100,7 +100,7 @@ resource "aws_security_group" "security_group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
     Name = "sg-${var.instance_name}"
   }

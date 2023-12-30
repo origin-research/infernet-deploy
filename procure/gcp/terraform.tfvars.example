@@ -1,3 +1,4 @@
+service_account_email = "terraform-deployer@project.iam.gserviceaccount.com"
 project = "project-id"
 region  = "region-id"
 zone    = "region-zone"
@@ -8,9 +9,6 @@ image = "image-id"
 ip_allow_ssh  = ["192.168.1.100"]
 ip_allow_http = ["192.168.1.100/24"]
 ip_allow_http_ports = ["5000"]
-
-repo_url = "git@github.com:organization/repo.git"
-repo_branch = "main"
 
 docker_username = "username"
 docker_password = "password"

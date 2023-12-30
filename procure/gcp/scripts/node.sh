@@ -9,16 +9,13 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt install -y docker-ce
 
-# Clone deploy repo on the first run
-export REPO_PATH=~/repo
-if [ ! -d "$REPO_PATH" ]; then
-    git clone "${repo_url}" --branch "${repo_branch}" --single-branch "$REPO_PATH"
-else
-    echo "Repository already exists at $REPO_PATH"
-fi
+# Extract deployment files
+DIR=~/deploy
+mkdir -p "$DIR" && cd "$DIR"
+curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/deploy-tar -H "Metadata-Flavor: Google"| base64 --decode > deploy.tar.gz
+tar -xzvf deploy.tar.gz && rm deploy.tar.gz
 
-# Config file
-cd "$REPO_PATH"
+# Write config file
 curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/secret-config -H "Metadata-Flavor: Google" | base64 --decode > config.json
 chmod 600 config.json
 

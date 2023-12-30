@@ -13,16 +13,13 @@ sudo apt install -y docker-ce awscli
 cat << 'EOF' > $HOME/run_on_reboot.sh
 #!/bin/bash
 
-# Clone deploy repo on the first run
-export REPO_PATH=~/repo
-if [ ! -d "$REPO_PATH" ]; then
-    git clone "${repo_url}" --branch "${repo_branch}" --single-branch "$REPO_PATH"
-else
-    echo "Repository already exists at $REPO_PATH"
-fi
+# Extract deployment files
+DIR=~/deploy
+mkdir -p "$DIR" && cd "$DIR"
+aws ssm get-parameter --name "deploy_tar" --with-decryption --query "Parameter.Value" --output text --region "${region}" | base64 --decode > deploy.tar.gz
+tar -xzvf deploy.tar.gz && rm deploy.tar.gz
 
 # Config file
-cd "$REPO_PATH"
 aws ssm get-parameter --name "config_${node_id}" --with-decryption --query "Parameter.Value" --output text --region "${region}" | base64 --decode > config.json
 chmod 600 config.json
 

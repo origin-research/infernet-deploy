@@ -1,5 +1,16 @@
 # Project
 
+variable "access_key_id" {
+  description = "AWS_ACCESS_KEY_ID for the AWS account"
+  type        = string
+}
+
+variable "secret_access_key" {
+  description = "AWS_SECRET_ACCESS_KEY for the AWS account"
+  type        = string
+  sensitive   = true
+}
+
 variable "region" {
   description = "The region where AWS resources will be created"
   type        = string
@@ -54,16 +65,6 @@ variable "is_production" {
 }
 
 # Startup
-
-variable "repo_url" {
-  description = "The github url of this repo"
-  type	      = string
-}
-
-variable "repo_branch" {
-  description = "The branch of this repo to use for deployment"
-  type 	      = string
-}
 
 variable "docker_username" {
   description = "Dockerhub username, required for pulling private docker images (including the Infernet node)"

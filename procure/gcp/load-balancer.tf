@@ -19,13 +19,24 @@ resource "google_compute_instance" "load_balancer" {
     }
   }
 
+  service_account {
+    email = var.service_account_email
+    scopes = [
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring.write",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append",
+    ]
+  }
+
   metadata = {
     # Startup script
     startup-script = file("${path.module}/scripts/lb.sh", )
 
     # Node IPs
     node_ips = join("\n", [for ip in google_compute_address.static-ip : ip.address])
-  
+
     # Docker credentials
     docker_username = var.docker_username
     docker_password = var.docker_password
@@ -33,7 +44,7 @@ resource "google_compute_instance" "load_balancer" {
 
   boot_disk {
     initialize_params {
-      image = "${var.image}"
+      image = var.image
       size = 100
     }
   }
@@ -50,7 +61,11 @@ resource "null_resource" "lb_restarter" {
 
   provisioner "local-exec" {
     # Force reset load balancer, since updating its metadata does not
-    command = "gcloud compute instances reset ${google_compute_instance.load_balancer.name} --zone=${google_compute_instance.load_balancer.zone}"
+    command = <<EOT
+      gcloud auth activate-service-account --key-file=${var.gcp_credentials_file_path}
+      gcloud compute instances reset ${google_compute_instance.load_balancer.name} --zone=${google_compute_instance.load_balancer.zone}
+      gcloud auth revoke ${var.service_account_email}
+    EOT
   }
 
   depends_on = [google_compute_instance.load_balancer]
