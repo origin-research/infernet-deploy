@@ -26,9 +26,10 @@ plan: check-provider
 
 # Define the apply target
 apply: check-provider
+	@echo "Preparing deployment files..."
+	@chmod +x prepare_files.sh
+	@./prepare_files.sh
 	@echo "Applying Terraform changes..."
-	@chmod +x encode_configs.sh
-	@./encode_configs.sh
 	@$(TERRAFORM_CMD) -chdir=$(provider) apply
 
 # Define the destroy target

@@ -17,8 +17,9 @@
     "port": 6379
   },
   "forward_stats": true,
-  "containers": {
-    "container-1": {
+  "containers": [
+    {
+      "name": "container-1",
       "image": "org1/image1:tag1",
       "description": "Container 1 description",
       "external": true,
@@ -34,7 +35,8 @@
       },
       "gpu": true
     },
-    "container-2": {
+    {
+      "name": "container-2",
       "image": "org2/image2:tag2",
       "description": "Container 2 description",
       "external": false,
@@ -49,5 +51,5 @@
         "KEY4": "VALUE4"
       }
     }
-  }
+  ]
 }

@@ -2,6 +2,9 @@
 *.json
 configs/encoded
 
+# Deployment files
+*.tar.gz
+
 # Terraform
 .terraform/
 .terraform*
