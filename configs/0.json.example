@@ -1,0 +1,55 @@
+{
+  "log_path": "infernet_node.log",
+  "server": {
+    "port": 5000
+  },
+  "chain": {
+    "enabled": true,
+    "rpc_ws": "ws://127.0.0.1:8545",
+    "coordinator_address": "0x..."
+  },
+  "docker": {
+    "username": "username",
+    "password": "password"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379
+  },
+  "forward_stats": true,
+  "containers": [
+    {
+      "name": "container-1",
+      "image": "org1/image1:tag1",
+      "description": "Container 1 description",
+      "external": true,
+      "port": "4999",
+      "allowed_ips": [
+        "XX.XX.XX.XXX",
+        "XX.XX.XX.XXX"
+      ],
+      "command": "--bind=0.0.0.0:3000 --workers=2",
+      "env": {
+        "KEY1": "VALUE1",
+        "KEY2": "VALUE2"
+      },
+      "gpu": true
+    },
+    {
+      "name": "container-2",
+      "image": "org2/image2:tag2",
+      "description": "Container 2 description",
+      "external": false,
+      "port": "4998",
+      "allowed_ips": [
+        "XX.XX.XX.XXX",
+        "XX.XX.XX.XXX"
+      ],
+      "command": "--bind=0.0.0.0:3000 --workers=2",
+      "env": {
+        "KEY3": "VALUE3",
+        "KEY4": "VALUE4"
+      }
+    }
+  ]
+}
