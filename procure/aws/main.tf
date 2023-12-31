@@ -9,7 +9,7 @@ terraform {
       version = "~> 3.2"
     }
   }
-  required_version = ">= 1.6.0"
+  required_version = ">= 1.5.5"
 }
 
 # AWS Configuration
