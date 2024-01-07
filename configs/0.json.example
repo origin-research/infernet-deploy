@@ -5,8 +5,13 @@
   },
   "chain": {
     "enabled": true,
-    "rpc_ws": "ws://127.0.0.1:8545",
-    "coordinator_address": "0x..."
+    "rpc_url": "http://127.0.0.1:8545",
+    "coordinator_address": "0x...",
+    "trail_head_blocks": 4,
+    "wallet": {
+      "max_gas_limit": 100000,
+      "private_key": "12345s"
+    }
   },
   "docker": {
     "username": "username",
@@ -19,11 +24,12 @@
   "forward_stats": true,
   "containers": [
     {
-      "name": "container-1",
+      "id": "container-1",
       "image": "org1/image1:tag1",
       "description": "Container 1 description",
       "external": true,
       "port": "4999",
+      "allowed_addresses": [],
       "allowed_ips": [
         "XX.XX.XX.XXX",
         "XX.XX.XX.XXX"
@@ -36,11 +42,12 @@
       "gpu": true
     },
     {
-      "name": "container-2",
+      "id": "container-2",
       "image": "org2/image2:tag2",
       "description": "Container 2 description",
       "external": false,
       "port": "4998",
+      "allowed_addresses": [],
       "allowed_ips": [
         "XX.XX.XX.XXX",
         "XX.XX.XX.XXX"

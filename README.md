@@ -17,22 +17,29 @@ Deploy a cluster of heterogenous [Infernet](https://github.com/origin-research/j
 
 #### Load balancing service:
 The load balancing REST server is configured automatically by Terraform. However, if you plan to use it, you need to understand its implications:
-> **IMPORTANT:** When configuring a heterogeneous node cluster (i.e. `0.json`, `1.json`, etc. are not identical), container names should be reserved for a **unique container setup at the cluster level, i.e. across nodes (and thus `.json` files)**.
+> **IMPORTANT:** When configuring a heterogeneous node cluster (i.e. `0.json`, `1.json`, etc. are not identical), container IDs should be reserved for a **unique container setup at the cluster level, i.e. across nodes (and thus `.json` files)**.
 >
-> _Example:_ Consider nodes A and B, each running a single LLM inference container; node A runs `image1`, and node B runs `image2`. If we name both containers `"llm-inference"` (`containers[0].name` attribute in `0.json`, `1.json`), the load balancer will be **unable to disambiguate** between the two services, and will consider them interchangeable, _which they are not._
+> _Example:_ Consider nodes A and B, each running a single LLM inference container; node A runs `image1`, and node B runs `image2`. If we set `id: "llm-inference"` in both containers (`containers[0].id` attribute in `0.json`, `1.json`), the load balancer will be **unable to disambiguate** between the two services, and will consider them interchangeable, _which they are not._
 >
-> Therefore, **re-using a name across configuration files must imply an identical container configuration**, including image, environment variables, command, etc. This will explicitly tell the load balancer which containers are interchangeable, and allow it to distribute requests for those containers across _all nodes running that container._
+> Therefore, **re-using a IDs across configuration files must imply an identical container configuration**, including image, environment variables, command, etc. This will explicitly tell the load balancer which containers are interchangeable, and allow it to distribute requests for those containers across _all nodes running that container._
 
 
 ### Deploy on AWS
 
-1. [Authenticate](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-authentication.html) with the AWS CLI on your machine.
+1. Create an AWS service account for deployment:
+    ```bash
+    cd procure/aws
+    chmod 700 create_service_account.sh
+    ./create_service_account.sh
+    ```
+    This will require local authentication with the AWS CLI. Add `access_key_id` and `secret_access_key` to your Terraform variables (see step 3).
 
 2. Make a copy of the example configuration file [terraform.tfvars.example](procure/aws/terraform.tfvars.example):
     ```bash
     cd procure/aws
     cp terraform.tfvars.example terraform.tfvars
     ```
+
 3. Configure your `terraform.tfvars` file. See [variables.tf](procure/aws/variables.tf) for config descriptions.
 
 4. Run Terraform:
@@ -55,7 +62,13 @@ The load balancing REST server is configured automatically by Terraform. However
 ### Deploy on GCP
 
 
-1. [Authenticate](https://cloud.google.com/docs/authentication/gcloud) with the GCloud CLI on your machine.
+1. Create a GCP service account for deployment:
+    ```bash
+    cd procure/gcp
+    chmod 700 create_service_account.sh
+    ./create_service_account.sh
+    ```
+    This will require local authentication with the GCP CLI, and create a local credentials file. Add the path to the credentials file (`gcp_credentials_file_path`) to your Terraform variables (see step 3).
 
 2. Make a copy of the example configuration file [terraform.tfvars.example](procure/gcp/terraform.tfvars.example):
     ```bash
