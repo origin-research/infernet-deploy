@@ -35,7 +35,7 @@ else
 fi
 
 # Run the container
-sudo docker run -d -p 5000:5000 --name load-balancer -v $HOME/ips.txt:/app/ips.txt --restart on-failure originresearch/infernet-lb:0.0.1
+sudo docker run -d -p 5000:5000 --name load-balancer -v $HOME/ips.txt:/app/ips.txt --restart on-failure ritualnetwork/infernet-lb:0.0.1
 sudo docker logout
 EOF
 
